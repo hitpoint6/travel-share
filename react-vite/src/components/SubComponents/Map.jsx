@@ -6,10 +6,8 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 const defaultMarkerIcon = new L.Icon({
-  iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+  iconUrl: "/assets/marker-icon-blue.png",
+  shadowUrl: "/assets/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
@@ -17,10 +15,8 @@ const defaultMarkerIcon = new L.Icon({
 });
 
 const searchMarkerIcon = new L.Icon({
-  iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+  iconUrl: "/assets/marker-icon-orange.png",
+  shadowUrl: "/assets/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
@@ -38,6 +34,7 @@ function SearchField({ setPosition }) {
       style: "bar",
       autoClose: true,
       keepResult: true,
+      showMarker: false,
     });
 
     map.addControl(searchControl);
@@ -57,16 +54,18 @@ function SearchField({ setPosition }) {
   return null;
 }
 
-const Map = ({ itinerary, currentActivityId, onSetPosition }) => {
+const Map = ({ itinerary, showSearchField, updateAcitivity }) => {
   const [searchPosition, setSearchPosition] = useState(null);
   console.log("searchPosition", searchPosition);
 
-  const handleMarkerClick = () => {
-    console.log("Marker clicked", searchPosition);
-  };
-
   const defaultCenter = { latitude: 37.7749, longitude: -122.4194 };
   const centerPosition = itinerary.schedules[0].activities[0] || defaultCenter;
+  const handleMarkerClick = () => {
+    if (searchPosition) {
+      updateAcitivity(searchPosition);
+    }
+    setSearchPosition(null);
+  };
 
   return (
     <MapContainer
@@ -84,7 +83,6 @@ const Map = ({ itinerary, currentActivityId, onSetPosition }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <SearchField setPosition={setSearchPosition} />
       {itinerary.schedules.map(
         (schedule, index) =>
           schedule &&
@@ -116,26 +114,23 @@ const Map = ({ itinerary, currentActivityId, onSetPosition }) => {
           ))
       )}
       {/* Search position marker */}
+      {showSearchField && <SearchField setPosition={setSearchPosition} />}
       {searchPosition && (
         <Marker
           position={[searchPosition.latitude, searchPosition.longitude]}
           icon={searchMarkerIcon}
-          eventHandlers={{ click: handleMarkerClick }}
         >
           <Popup>
             You are here: <br />
             Latitude: {searchPosition.latitude} <br />
             Longitude: {searchPosition.longitude} <br />
-            Label: {searchPosition.label}
+            Label: {searchPosition.label} <br />
             <button
+              className="custom-button"
               type="button"
-              onClick={() => {
-                if (searchPosition) {
-                  onSetPosition(searchPosition);
-                }
-              }}
+              onClick={handleMarkerClick}
             >
-              Add to itinerary {currentActivityId}
+              Add to itinerary
             </button>
           </Popup>
         </Marker>

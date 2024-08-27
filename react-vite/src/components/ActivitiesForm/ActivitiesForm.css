@@ -23,7 +23,7 @@
   cursor: pointer;
 }
 
-.activity-edit-page button {
+.itinerary-content button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -33,9 +33,25 @@
   margin-top: 10px;
 }
 
-.activity-edit-page button:hover {
+.itinerary-content button:hover {
   cursor: pointer;
   background-color: #55ad9b;
+}
+
+
+.custom-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #55ad9b;
+  color: white;
+  width: 150px;
+  margin-top: 10px;
+}
+
+.custom-button:hover {
+  cursor: pointer;
+  background-color: #95d2b3;
 }
 
 .confirm-info {

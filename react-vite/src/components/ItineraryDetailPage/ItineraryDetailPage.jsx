@@ -133,7 +133,7 @@ function ItineraryDetail() {
             </div>
           </div>
         </div>
-        <Map itinerary={itinerary} currentItinerary={1} />
+        <Map itinerary={itinerary} />
       </main>
     );
 }  

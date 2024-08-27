@@ -36,15 +36,15 @@ function ActivitiesForm() {
     }, [dispatch, itineraryId]);
 
     const handleAddActivityClick = (scheduleId) => {
-        setShowActivityForm(true);
-        setActivityData({ ...activityData, schedule_id: scheduleId });
+      setShowActivityForm(true);
+      setActivityData({ ...activityData, schedule_id: scheduleId });
     };
 
     const handleInputChange = (e) => {
-        setActivityData({ ...activityData, [e.target.name]: e.target.value });
+      setActivityData({ ...activityData, [e.target.name]: e.target.value });
     };
 
-    const setPosition = (searchPosition) => {
+    const updateActivity = (searchPosition) => {
       setActivityData({
         ...activityData,
         longitude: searchPosition.longitude,
@@ -243,9 +243,8 @@ function ActivitiesForm() {
         </div>
         <Map
           itinerary={itinerary}
-          currentActivityId={currentActivityId}
-          o
-          onSetPosition={setPosition}
+          showSearchField={showActivityForm}
+          updateAcitivity={updateActivity}
         />
       </main>
     );
